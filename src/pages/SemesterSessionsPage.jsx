@@ -95,19 +95,7 @@ const SemesterSessionsPage = () => {
                   onClick={() => toggleUnit(unit.slug)}
                   className="w-full flex items-center justify-between p-4 sm:p-5 hover:bg-grey/5 transition-colors"
                 >
-                  <div className="flex items-center gap-3">
-                    {isOpen ? (
-                      <FiChevronUp className="text-grey text-xl flex-shrink-0" />
-                    ) : (
-                      <FiChevronDown className="text-grey text-xl flex-shrink-0" />
-                    )}
-                    <span className="text-xs sm:text-sm text-grey/60 hidden sm:inline">
-                      {unit.sessions.length} لقاءات
-                    </span>
-                  </div>
-
                   <div className="flex items-center gap-3 sm:gap-4">
-                    {/* Number FIRST in DOM = appears on RIGHT in RTL */}
                     <div
                       className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shadow-sm flex-shrink-0"
                       style={{ background: subject.gradient }}
@@ -116,10 +104,20 @@ const SemesterSessionsPage = () => {
                         {unit.number}
                       </span>
                     </div>
-                    {/* Title SECOND in DOM = appears to the LEFT of number in RTL */}
                     <h3 className="text-base sm:text-lg lg:text-xl font-bold text-primary">
                       {unit.name}
                     </h3>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs sm:text-sm text-grey/60 hidden sm:inline">
+                      {unit.sessions.length} لقاءات
+                    </span>
+                    {isOpen ? (
+                      <FiChevronUp className="text-grey text-xl flex-shrink-0" />
+                    ) : (
+                      <FiChevronDown className="text-grey text-xl flex-shrink-0" />
+                    )}
                   </div>
                 </button>
 
