@@ -36,35 +36,81 @@ export const semesters = [
   { slug: 'semester-2', name: 'الفصل الثاني', number: 2 },
 ];
 
-// Sample topics for each subject — separated by semester
-const sampleSessionTopics = {
+const arabicOrdinals = ['الأول', 'الثاني', 'الثالث', 'الرابع', 'الخامس', 'السادس', 'السابع', 'الثامن'];
+
+// Unit topics per subject per semester (4 units each)
+const sampleUnitTopics = {
   arabic: {
-    'semester-1': ['القراءة', 'النحو', 'الإملاء', 'البلاغة', 'الكتابة', 'الأدب', 'الشعر', 'النصوص'],
-    'semester-2': ['الاستماع', 'المحادثة', 'القواعد', 'التعبير', 'القصة', 'الرواية', 'المقال', 'التحليل'],
+    'semester-1': [
+      { name: 'الوحدة الأولى - القراءة', sessions: ['مهارات القراءة', 'القراءة الإبداعية'] },
+      { name: 'الوحدة الثانية - النحو', sessions: ['أساسيات النحو', 'تطبيقات نحوية'] },
+      { name: 'الوحدة الثالثة - الإملاء', sessions: ['قواعد الإملاء', 'تدريبات إملائية'] },
+      { name: 'الوحدة الرابعة - الكتابة', sessions: ['التعبير الكتابي', 'فن الكتابة'] },
+    ],
+    'semester-2': [
+      { name: 'الوحدة الأولى - الاستماع', sessions: ['مهارات الاستماع', 'الاستيعاب السمعي'] },
+      { name: 'الوحدة الثانية - المحادثة', sessions: ['مهارات الحوار', 'العرض والتقديم'] },
+      { name: 'الوحدة الثالثة - الأدب', sessions: ['الشعر العربي', 'النثر الأدبي'] },
+      { name: 'الوحدة الرابعة - التحليل', sessions: ['تحليل النصوص', 'النقد الأدبي'] },
+    ],
   },
   math: {
-    'semester-1': ['الأعداد', 'العمليات', 'الكسور', 'الأسس والجذور', 'المعادلات', 'الهندسة', 'الإحصاء', 'الاحتمالات'],
-    'semester-2': ['الدوال', 'المتباينات', 'الزوايا', 'المثلثات', 'الدائرة', 'المساحات', 'الحجوم', 'التحويلات'],
+    'semester-1': [
+      { name: 'الوحدة الأولى - الأعداد', sessions: ['الأعداد الصحيحة', 'الأعداد النسبية'] },
+      { name: 'الوحدة الثانية - العمليات', sessions: ['الجمع والطرح', 'الضرب والقسمة'] },
+      { name: 'الوحدة الثالثة - الكسور', sessions: ['الكسور العادية', 'الكسور العشرية'] },
+      { name: 'الوحدة الرابعة - المعادلات', sessions: ['المعادلات الخطية', 'حل المعادلات'] },
+    ],
+    'semester-2': [
+      { name: 'الوحدة الأولى - الهندسة', sessions: ['الأشكال الهندسية', 'المثلثات والزوايا'] },
+      { name: 'الوحدة الثانية - المساحات', sessions: ['مساحة الأشكال', 'الحجوم'] },
+      { name: 'الوحدة الثالثة - الإحصاء', sessions: ['جمع البيانات', 'تحليل البيانات'] },
+      { name: 'الوحدة الرابعة - الاحتمالات', sessions: ['مبادئ الاحتمالات', 'التطبيقات'] },
+    ],
   },
   science: {
-    'semester-1': ['المادة', 'الطاقة', 'الحركة', 'الكهرباء', 'الأحياء', 'النباتات', 'الفلك', 'البيئة'],
-    'semester-2': ['الذرة', 'التفاعلات', 'الضوء', 'الصوت', 'الحيوانات', 'الجسم البشري', 'الأرض', 'المناخ'],
+    'semester-1': [
+      { name: 'الوحدة الأولى - المادة', sessions: ['خصائص المادة', 'حالات المادة'] },
+      { name: 'الوحدة الثانية - الطاقة', sessions: ['أنواع الطاقة', 'تحولات الطاقة'] },
+      { name: 'الوحدة الثالثة - الحركة', sessions: ['أنواع الحركة', 'قوانين الحركة'] },
+      { name: 'الوحدة الرابعة - الكهرباء', sessions: ['الكهرباء الساكنة', 'التيار الكهربائي'] },
+    ],
+    'semester-2': [
+      { name: 'الوحدة الأولى - الأحياء', sessions: ['الخلية', 'الكائنات الحية'] },
+      { name: 'الوحدة الثانية - النباتات', sessions: ['أجزاء النبات', 'التركيب الضوئي'] },
+      { name: 'الوحدة الثالثة - الجسم البشري', sessions: ['الأجهزة الحيوية', 'الصحة العامة'] },
+      { name: 'الوحدة الرابعة - البيئة', sessions: ['النظام البيئي', 'حماية البيئة'] },
+    ],
   },
 };
 
-const arabicOrdinals = ['الأول', 'الثاني', 'الثالث', 'الرابع', 'الخامس', 'السادس', 'السابع', 'الثامن'];
+// Returns units with their sessions for a given subject/grade/semester
+export const getUnits = (subjectSlug, gradeSlug, semesterSlug) => {
+  const subjectUnits = sampleUnitTopics[subjectSlug] || sampleUnitTopics.arabic;
+  const units = subjectUnits[semesterSlug] || subjectUnits['semester-1'];
 
-export const getSessions = (subjectSlug, gradeSlug, semesterSlug) => {
-  const subjectTopics =
-    sampleSessionTopics[subjectSlug] || sampleSessionTopics.arabic;
-  const topics = subjectTopics[semesterSlug] || subjectTopics['semester-1'];
-
-  return Array.from({ length: 8 }, (_, i) => ({
-    slug: `session-${i + 1}`,
-    number: i + 1,
-    name: `اللقاء ${arabicOrdinals[i]}`,
-    title: topics[i],
-    fullName: `اللقاء ${arabicOrdinals[i]} - ${topics[i]}`,
-    lessonCount: 4,
+  return units.map((unit, unitIndex) => ({
+    slug: `unit-${unitIndex + 1}`,
+    number: unitIndex + 1,
+    name: unit.name,
+    sessions: unit.sessions.map((sessionTitle, sessionIndex) => {
+      // Calculate global session number across the semester
+      const globalNumber = (unitIndex * 2) + sessionIndex + 1;
+      return {
+        slug: `session-${globalNumber}`,
+        number: globalNumber,
+        name: `اللقاء ${arabicOrdinals[globalNumber - 1]}`,
+        title: sessionTitle,
+        fullName: `اللقاء ${globalNumber} - ${sessionTitle}`,
+        unitSlug: `unit-${unitIndex + 1}`,
+        unitName: unit.name,
+      };
+    }),
   }));
+};
+
+// Keep getSessions for backward compatibility (used by LessonPage)
+export const getSessions = (subjectSlug, gradeSlug, semesterSlug) => {
+  const units = getUnits(subjectSlug, gradeSlug, semesterSlug);
+  return units.flatMap(unit => unit.sessions);
 };
